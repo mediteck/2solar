@@ -213,10 +213,20 @@
           </div>
         </div>
         <div class="row mb-3">
-          <div class="col">
+          <div class="col-sm-2">
             <span id="addUser" class="btn btn-secondary" @click="addUser">
               Add user
             </span>
+          </div>
+          <div class="col-sm-10">
+            <div
+              v-show="users.length >= 3"
+              class="alert alert-warning"
+              role="alert"
+            >
+              Up to 3 users are included in a standard license. Adding more
+              users will add additonal costs.
+            </div>
           </div>
         </div>
       </fieldset>

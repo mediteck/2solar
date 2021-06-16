@@ -1,6 +1,11 @@
 <template>
   <div class="hello">
     <h1 class="mb-3">Please provide the following information</h1>
+
+    <div v-show="success" class="alert alert-success" role="alert">
+      Form was successfully submitted, you can now provide more informating if
+      you wish.
+    </div>
     <form id="information" name="information" method="POST" @submit="checkForm">
       <div class="row mb-3">
         <label for="company" class="col-sm-2 form-label">Company name</label>
@@ -290,6 +295,7 @@ export default {
       users: [],
       progress: 0,
       errors: {},
+      success: false,
     };
   },
   watch: {
@@ -345,8 +351,45 @@ export default {
       this.users.splice(index, 1);
     },
     checkForm: function(e) {
-      console.log("submit", this.company, this.email);
       e.preventDefault();
+      let formData = new FormData();
+
+      formData.append("company", this.company);
+      formData.append("email", this.email);
+      formData.append("phonenumber", this.phonenumber);
+      formData.append("subdomain", this.subdomain);
+
+      formData.append("logo", this.logo);
+      formData.append("quote", this.quote);
+      formData.append("quoteTemplate", this.quoteTemplate);
+      formData.append("pricelist", this.pricelist);
+
+      if (this.users.length > 0) {
+        formData.append("users", this.users);
+      }
+
+      // API CALLS to backend
+      console.log("Perform backend API call and lets asume its all ok.");
+
+      // RESET FORM DATA
+      this.company = "";
+      this.email = "";
+      this.phonenumber = "";
+      this.subdomain = "";
+      this.logo = "";
+      this.quote = "";
+      this.quoteTemplate = "";
+      this.pricelist = "";
+      this.users = [];
+      this.progress = 0;
+      this.errors = {};
+
+      this.$refs.logo.value = null;
+      this.$refs.quote.value = null;
+      this.$refs.quoteTemplate.value = null;
+      this.$refs.pricelist.value = null;
+
+      this.success = true;
     },
     handleLogoUpload: function() {
       const file = this.$refs.logo.files[0];
@@ -355,13 +398,12 @@ export default {
         delete this.errors.logo;
       } else {
         this.errors.logo = "Invalid file type selected";
-        this.logo = "";
+        this.logo = null;
       }
     },
     handleQuoteUpload: function() {
       this.quote = this.$refs.quote.files[0];
       const file = this.$refs.quote.files[0];
-      console.log(file);
       if (
         file &&
         ["pdf", "doc", "docx"].includes(file.name.split(/[.]+/).pop())
@@ -370,7 +412,7 @@ export default {
         delete this.errors.quote;
       } else {
         this.errors.quote = "Invalid file type selected";
-        this.quote = "";
+        this.quote = null;
       }
     },
     handleQuoteTemplateUpload: function() {
@@ -381,7 +423,7 @@ export default {
         delete this.errors.quoteTemplate;
       } else {
         this.errors.quoteTemplate = "Invalid file type selected";
-        this.quoteTemplate = "";
+        this.quoteTemplate = null;
       }
     },
     handlePricelistUpload: function() {
@@ -392,7 +434,7 @@ export default {
         delete this.errors.pricelist;
       } else {
         this.errors.pricelist = "Invalid file type selected";
-        this.pricelist = "";
+        this.pricelist = null;
       }
     },
   },

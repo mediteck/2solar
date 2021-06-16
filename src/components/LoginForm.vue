@@ -59,9 +59,12 @@ export default {
   methods: {
     checkForm: function(e) {
       e.preventDefault();
-      if (this.username == "admin" && this.password == "admin01")
+      if (this.username == "admin" && this.password == "admin01") {
+        this.$store.commit("authenticate");
         this.$router.push("/");
-      else this.error = "Invalid username/password";
+      } else
+        this.error =
+          "Invalid username/password, you probably meant admin/admin01";
     },
   },
 };

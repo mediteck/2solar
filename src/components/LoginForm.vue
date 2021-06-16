@@ -1,7 +1,13 @@
 <template>
   <div class="hello">
     <h1 class="mb-3">Please login</h1>
-    <form id="login" name="login" method="POST" @submit="checkForm">
+    <form
+      id="login"
+      name="login"
+      method="POST"
+      @submit="checkForm"
+      v-if="!isAuthenticated"
+    >
       <div class="row mb-3">
         <label for="username" class="col-sm-2 form-label">Username</label>
         <div class="col-sm-10">
@@ -43,6 +49,9 @@
         </div>
       </div>
     </form>
+    <button type="button" class="btn btn-primary" v-else @click="logout">
+      Logout
+    </button>
   </div>
 </template>
 
@@ -65,6 +74,14 @@ export default {
       } else
         this.error =
           "Invalid username/password, you probably meant admin/admin01";
+    },
+    logout: function() {
+      this.$store.commit("dethenticate");
+    },
+  },
+  computed: {
+    isAuthenticated: function() {
+      return this.$store.state.isAuthenticated;
     },
   },
 };

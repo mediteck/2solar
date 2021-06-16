@@ -86,6 +86,9 @@
         <div class="col-sm-10 offset-sm-2">
           <div id="subdomainHelp" class="form-text">
             (allowed file types: .jpg, .png)
+            <div v-show="errors.logo" class="alert alert-danger" role="alert">
+              {{ errors.logo }}
+            </div>
           </div>
         </div>
       </div>
@@ -108,6 +111,9 @@
         <div class="col-sm-10 offset-sm-2">
           <div id="quoteHelp" class="form-text">
             (allowed file types: .pdf, .doc, .docx)
+            <div v-show="errors.quote" class="alert alert-danger" role="alert">
+              {{ errors.quote }}
+            </div>
           </div>
         </div>
       </div>
@@ -132,6 +138,13 @@
         <div class="col-sm-10 offset-sm-2">
           <div id="quote-templateHelp" class="form-text">
             (allowed file types: .pdf)
+            <div
+              v-show="errors.quoteTemplate"
+              class="alert alert-danger"
+              role="alert"
+            >
+              {{ errors.quoteTemplate }}
+            </div>
           </div>
         </div>
       </div>
@@ -154,6 +167,13 @@
         <div class="col-sm-10 offset-sm-2">
           <div id="pricelistHelp" class="form-text">
             (allowed file types: .csv)
+            <div
+              v-show="errors.pricelist"
+              class="alert alert-danger"
+              role="alert"
+            >
+              {{ errors.pricelist }}
+            </div>
           </div>
         </div>
       </div>
@@ -330,11 +350,11 @@ export default {
     },
     handleLogoUpload: function() {
       const file = this.$refs.logo.files[0];
-      if (["jpg", "png"].includes(file.name.split(/[.]+/).pop())) {
+      if (file && ["jpg", "png"].includes(file.name.split(/[.]+/).pop())) {
         this.logo = file;
         delete this.errors.logo;
       } else {
-        this.errors.logo = "Invalid filetype selected";
+        this.errors.logo = "Invalid file type selected";
         this.logo = "";
       }
     },
@@ -342,33 +362,36 @@ export default {
       this.quote = this.$refs.quote.files[0];
       const file = this.$refs.quote.files[0];
       console.log(file);
-      if (["pdf", "doc", "docx"].includes(file.name.split(/[.]+/).pop())) {
+      if (
+        file &&
+        ["pdf", "doc", "docx"].includes(file.name.split(/[.]+/).pop())
+      ) {
         this.quote = file;
         delete this.errors.quote;
       } else {
-        this.errors.quote = "Invalid filetype selected";
+        this.errors.quote = "Invalid file type selected";
         this.quote = "";
       }
     },
     handleQuoteTemplateUpload: function() {
       this.quoteTemplate = this.$refs.quoteTemplate.files[0];
       const file = this.$refs.quoteTemplate.files[0];
-      if (["pdf"].includes(file.name.split(/[.]+/).pop())) {
+      if (file && ["pdf"].includes(file.name.split(/[.]+/).pop())) {
         this.quoteTemplate = file;
         delete this.errors.quoteTemplate;
       } else {
-        this.errors.quoteTemplate = "Invalid filetype selected";
+        this.errors.quoteTemplate = "Invalid file type selected";
         this.quoteTemplate = "";
       }
     },
     handlePricelistUpload: function() {
       this.pricelist = this.$refs.pricelist.files[0];
       const file = this.$refs.pricelist.files[0];
-      if (["csv"].includes(file.name.split(/[.]+/).pop())) {
+      if (file && ["csv"].includes(file.name.split(/[.]+/).pop())) {
         this.pricelist = file;
         delete this.errors.pricelist;
       } else {
-        this.errors.pricelist = "Invalid filetype selected";
+        this.errors.pricelist = "Invalid file type selected";
         this.pricelist = "";
       }
     },
